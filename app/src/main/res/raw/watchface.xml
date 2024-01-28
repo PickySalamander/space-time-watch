@@ -2,28 +2,198 @@
 <WatchFace width="450" height="450">
 	<Metadata key="CLOCK_TYPE" value="ANALOG"/>
 	<Metadata key="PREVIEW_TIME" value="10:08:32"/>
+
+	<BitmapFonts>
+		<BitmapFont name="am-pm">
+			<Word name="AM" resource="@drawable/am" width="41" height="68"/>
+			<Word name="PM" resource="@drawable/pm" width="41" height="68"/>
+		</BitmapFont>
+
+		<BitmapFont name="aod-am-pm">
+			<Word name="AM" resource="@drawable/aod_am" width="41" height="68"/>
+			<Word name="PM" resource="@drawable/aod_pm" width="41" height="68"/>
+		</BitmapFont>
+	</BitmapFonts>
+
 	<Scene backgroundColor="#ff000000">
-		<PartImage x="0" y="0" width="450" height="450">
-			<Image resource="@drawable/background"/>
-		</PartImage>
+		<Group name="regular-face" x="0" y="0" width="450" height="450">
+			<Variant mode="AMBIENT" target="alpha" value="0" />
 
-		<PartImage x="0" y="0" width="450" height="450">
-			<Image resource="@drawable/stars"/>
-		</PartImage>
+			<PartImage x="0" y="0" width="450" height="450">
+				<Image resource="@drawable/background"/>
+			</PartImage>
 
-		<HourHand x="122" y="-3" width="206" height="206"
-		          pivotX="0.5" pivotY="1.108374384236453"
-		          resource="@drawable/small_planet"/>
+			<PartImage x="0" y="0" width="450" height="450">
+				<Image resource="@drawable/stars"/>
+			</PartImage>
 
-		<PartImage x="55" y="55" width="340" height="340">
-			<Image resource="@drawable/big_planet"/>
-		</PartImage>
+			<HourHand x="122" y="-3" width="206" height="206"
+			          pivotX="0.5" pivotY="1.108374384236453"
+			          resource="@drawable/small_planet"/>
 
-		<PartAnimatedImage x="184" y="27" width="82" height="51" pivotX="0.5" pivotY="3.882352941176471"
-		                   name="Ship_4315" alpha="255">
-			<Transform target="angle" value="[MINUTE_SECOND] * 6"/>
-			<AnimatedImage resource="@drawable/ship" format="WEBP"/>
-			<AnimationController play="ON_VISIBLE" repeat="TRUE" beforePlaying="FIRST_FRAME"/>
-		</PartAnimatedImage>
+			<PartImage x="55" y="55" width="340" height="340">
+				<Image resource="@drawable/big_planet"/>
+			</PartImage>
+
+			<PartAnimatedImage x="184" y="27" width="82" height="51" pivotX="0.5" pivotY="3.882352941176471">
+				<Transform target="angle" value="[MINUTE_SECOND] * 6"/>
+				<AnimatedImage resource="@drawable/ship" format="WEBP"/>
+				<AnimationController play="ON_VISIBLE" repeat="TRUE" beforePlaying="FIRST_FRAME"/>
+			</PartAnimatedImage>
+
+			<Condition>
+				<Expressions>
+					<Expression name="is-24-hr">[IS_24_HOUR_MODE] == 1</Expression>
+				</Expressions>
+				<Compare expression="is-24-hr">
+					<PartText x="0" y="175" width="450" height="68" tintColor="#ff0b4b63">
+						<Localization calendar="GREGORIAN"/>
+						<Text>
+							<Font family="Roboto" size="68" weight="BLACK">
+								<Template>%s
+									<Parameter expression="[HOUR_1_24]"/>
+								</Template>
+							</Font>
+
+							<Font family="Roboto" size="68" weight="THIN">
+								<Template>%s
+									<Parameter expression="[MINUTE_Z]"/>
+								</Template>
+							</Font>
+						</Text>
+					</PartText>
+				</Compare>
+				<Default>
+					<PartText x="0" y="175" width="450" height="68" tintColor="#ff0b4b63">
+						<Localization calendar="GREGORIAN"/>
+						<Text>
+							<Font family="Roboto" size="68" weight="BLACK">
+								<Template>%s
+									<Parameter expression="[HOUR_1_12]"/>
+								</Template>
+							</Font>
+
+							<Font family="Roboto" size="68" weight="THIN">
+								<Template>%s
+									<Parameter expression="[MINUTE_Z]"/>
+								</Template>
+							</Font>
+
+							<BitmapFont family="am-pm" size="68">
+								<Template>%s
+									<Parameter expression="[AMPM_STRING]"/>
+								</Template>
+							</BitmapFont>
+						</Text>
+					</PartText>
+				</Default>
+			</Condition>
+
+			<PartText x="0" y="243" width="450" height="28" tintColor="#ff0b4b63">
+				<Localization calendar="GREGORIAN"/>
+				<Text>
+					<Font family="Roboto" size="28" weight="THIN">
+						<Upper>
+							<Template>%s
+								<Parameter expression="[MONTH_S]"/>
+							</Template>
+						</Upper>
+					</Font>
+
+					<Font family="Roboto" size="28">
+						<Template>%s
+							<Parameter expression="[DAY]"/>
+						</Template>
+					</Font>
+				</Text>
+			</PartText>
+
+			<PartImage x="0" y="0" width="450" height="450">
+				<Image resource="@drawable/border"/>
+			</PartImage>
+		</Group>
+
+		<Group name="aod-face" x="0" y="0" width="450" height="450" alpha="0">
+			<Variant mode="AMBIENT" target="alpha" value="255" />
+
+			<PartImage x="0" y="0" width="450" height="450">
+				<Image resource="@drawable/aod_background"/>
+			</PartImage>
+
+			<HourHand x="167" y="30" width="116" height="82"
+			          pivotX="0.5" pivotY="2.378048780487805"
+			          resource="@drawable/aod_small_planet"/>
+
+			<PartImage x="100" y="100" width="250" height="250">
+				<Image resource="@drawable/aod_big_planet"/>
+			</PartImage>
+
+			<Condition>
+				<Expressions>
+					<Expression name="is-24-hr">[IS_24_HOUR_MODE] == 1</Expression>
+				</Expressions>
+				<Compare expression="is-24-hr">
+					<PartText x="0" y="175" width="450" height="68" tintColor="#ffffffff">
+						<Localization calendar="GREGORIAN"/>
+						<Text>
+							<Font family="Roboto" size="68" weight="BLACK">
+								<Template>%s
+									<Parameter expression="[HOUR_1_24]"/>
+								</Template>
+							</Font>
+
+							<Font family="Roboto" size="68" weight="LIGHT">
+								<Template>%s
+									<Parameter expression="[MINUTE_Z]"/>
+								</Template>
+							</Font>
+						</Text>
+					</PartText>
+				</Compare>
+				<Default>
+					<PartText x="0" y="175" width="450" height="68" tintColor="#ffffffff">
+						<Localization calendar="GREGORIAN"/>
+						<Text>
+							<Font family="Roboto" size="68" weight="BLACK">
+								<Template>%s
+									<Parameter expression="[HOUR_1_12]"/>
+								</Template>
+							</Font>
+
+							<Font family="Roboto" size="68" weight="LIGHT">
+								<Template>%s
+									<Parameter expression="[MINUTE_Z]"/>
+								</Template>
+							</Font>
+
+							<BitmapFont family="aod-am-pm" size="68">
+								<Template>%s
+									<Parameter expression="[AMPM_STRING]"/>
+								</Template>
+							</BitmapFont>
+						</Text>
+					</PartText>
+				</Default>
+			</Condition>
+
+			<PartText x="0" y="243" width="450" height="28" tintColor="#ffffffff">
+				<Localization calendar="GREGORIAN"/>
+				<Text>
+					<Font family="Roboto" size="28" weight="LIGHT">
+						<Upper>
+							<Template>%s
+								<Parameter expression="[MONTH_S]"/>
+							</Template>
+						</Upper>
+					</Font>
+
+					<Font family="Roboto" size="28">
+						<Template>%s
+							<Parameter expression="[DAY]"/>
+						</Template>
+					</Font>
+				</Text>
+			</PartText>
+		</Group>
 	</Scene>
 </WatchFace>
