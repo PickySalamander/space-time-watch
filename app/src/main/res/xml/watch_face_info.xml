@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WatchFaceInfo>
+	<!-- Preview image of the watch face -->
 	<Preview value="@drawable/watch_face_preview"/>
+
+	<!-- Allow user customizations, without this the user won't be able to change the settings for the face -->
 	<Editable value="true"/>
 </WatchFaceInfo>

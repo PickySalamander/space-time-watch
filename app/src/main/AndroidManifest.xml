@@ -7,6 +7,7 @@
 	             android:icon="@mipmap/ic_launcher"
 	             tools:ignore="WearStandaloneAppFlag">
 
+		<!-- Specify that this project uses WFF XML -->
 		<property android:name="com.google.wear.watchface.format.version" android:value="1"/>
 	</application>
 

@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WatchFace width="450" height="450">
-	<Metadata key="CLOCK_TYPE" value="DIGITAL"/>
-	<Metadata key="PREVIEW_TIME" value="10:08:32"/>
 
+<!-- Configuration for the watch face's layout -->
+<WatchFace width="450" height="450">
+	<!-- Specifies the primary watch face type -->
+	<Metadata key="CLOCK_TYPE" value="DIGITAL"/>
+
+	<!-- Various settings that the user can set for the watch face -->
 	<UserConfigurations>
+		<!-- Should the date be shown -->
 		<BooleanConfiguration id="show_date"
 		                      displayName="@string/show_date_label"
 		                      screenReaderText="@string/show_date_label"
 		                      defaultValue="TRUE"/>
 
+		<!-- Should a border be shown around the face -->
 		<BooleanConfiguration id="show_border"
 		                      displayName="@string/show_border_label"
 		                      screenReaderText="@string/show_border_label"
 		                      defaultValue="TRUE"/>
 	</UserConfigurations>
 
+	<!-- Bitmap fonts that are kind of a hacky way to have AM / PM to be shown at the bottom of the line. Currently,
+	there is no way to vertically align text in WFF, so this was a cheating way to do that. -->
 	<BitmapFonts>
+		<!-- Regular AM / PM-->
 		<BitmapFont name="am-pm">
 			<Word name="AM" resource="@drawable/am" width="41" height="68"/>
 			<Word name="PM" resource="@drawable/pm" width="41" height="68"/>
 		</BitmapFont>
 
+		<!-- Always on AM / PM-->
 		<BitmapFont name="aod-am-pm">
 			<Word name="AM" resource="@drawable/aod_am" width="41" height="68"/>
 			<Word name="PM" resource="@drawable/aod_pm" width="41" height="68"/>
@@ -28,40 +37,52 @@
 	</BitmapFonts>
 
 	<Scene backgroundColor="#ff000000">
+		<!-- Regular display of the watch face -->
 		<Group name="regular-face" x="0" y="0" width="450" height="450">
+			<!-- Hide during always on / ambient mode -->
 			<Variant mode="AMBIENT" target="alpha" value="0"/>
 
+			<!-- Background -->
 			<PartImage x="0" y="0" width="450" height="450">
 				<Image resource="@drawable/background"/>
 			</PartImage>
 
+			<!-- Background Stars -->
 			<PartImage x="0" y="0" width="450" height="450">
 				<Image resource="@drawable/stars"/>
 			</PartImage>
 
+			<!-- Small Planet (hour hand) -->
 			<HourHand x="122" y="-3" width="206" height="206"
 			          pivotX="0.5" pivotY="1.108374384236453"
 			          resource="@drawable/small_planet"/>
 
+			<!-- Big planet foreground behind text -->
 			<PartImage x="55" y="55" width="340" height="340">
 				<Image resource="@drawable/big_planet"/>
 			</PartImage>
 
+			<!-- Minute hand of animated spaceship -->
 			<PartAnimatedImage x="184" y="27" width="82" height="51" pivotX="0.5" pivotY="3.882352941176471">
 				<Transform target="angle" value="[MINUTE_SECOND] * 6"/>
 				<AnimatedImage resource="@drawable/ship" format="WEBP"/>
 				<AnimationController play="ON_VISIBLE" repeat="TRUE" beforePlaying="FIRST_FRAME"/>
 			</PartAnimatedImage>
 
+			<!-- Condition to show either a 24hr or 12hr watch face -->
 			<Condition>
 				<Expressions>
 					<Expression name="is-24-hr">[IS_24_HOUR_MODE] == 1</Expression>
 				</Expressions>
 				<Compare expression="is-24-hr">
+					<!-- Show 24hr clock -->
 					<PartText x="0" y="0" width="450" height="68" tintColor="#ff0b4b63">
+						<!-- Shift down if the user doesn't want the date shown -->
 						<Transform target="y" value="[CONFIGURATION.show_date] ? 175 : 191" mode="TO"/>
 
 						<Localization calendar="GREGORIAN"/>
+
+						<!-- Text for the clock in 2 different fonts -->
 						<Text>
 							<Font family="Roboto" size="68" weight="BLACK">
 								<Template>%s
@@ -78,10 +99,14 @@
 					</PartText>
 				</Compare>
 				<Default>
+					<!-- Show 12hr clock -->
 					<PartText x="0" y="0" width="450" height="68" tintColor="#ff0b4b63">
+						<!-- Shift down if the user doesn't want the date shown -->
 						<Transform target="y" value="[CONFIGURATION.show_date] ? 175 : 191" mode="TO"/>
 
 						<Localization calendar="GREGORIAN"/>
+
+						<!-- Text for the clock in two different fonts -->
 						<Text>
 							<Font family="Roboto" size="68" weight="BLACK">
 								<Template>%s
@@ -95,6 +120,7 @@
 								</Template>
 							</Font>
 
+							<!-- AM / PM bitmap hack to make the small text to be bottom aligned -->
 							<BitmapFont family="am-pm" size="68">
 								<Template>%s
 									<Parameter expression="[AMPM_STRING]"/>
@@ -105,10 +131,13 @@
 				</Default>
 			</Condition>
 
+			<!-- Optionally show the date under the time if the user wants -->
 			<BooleanConfiguration id="show_date">
 				<BooleanOption id="TRUE">
 					<PartText x="0" y="243" width="450" height="28" tintColor="#ff0b4b63">
 						<Localization calendar="GREGORIAN"/>
+
+						<!-- Show the date in two different fonts -->
 						<Text>
 							<Font family="Roboto" size="28" weight="THIN">
 								<Upper>
@@ -128,6 +157,7 @@
 				</BooleanOption>
 			</BooleanConfiguration>
 
+			<!-- Optionally show the outside watch border if the user wants -->
 			<BooleanConfiguration id="show_border">
 				<BooleanOption id="TRUE">
 					<PartImage x="0" y="0" width="450" height="450">
@@ -137,28 +167,40 @@
 			</BooleanConfiguration>
 		</Group>
 
+		<!-- Always on Display / Ambient Mode of the watch face (starts hidden) -->
 		<Group name="aod-face" x="0" y="0" width="450" height="450" alpha="0">
+			<!-- Show during always on / ambient mode -->
 			<Variant mode="AMBIENT" target="alpha" value="255"/>
 
+			<!-- Background -->
 			<PartImage x="0" y="0" width="450" height="450">
 				<Image resource="@drawable/aod_background"/>
 			</PartImage>
 
+			<!-- Small Planet (hour hand) -->
 			<HourHand x="167" y="30" width="116" height="82"
 			          pivotX="0.5" pivotY="2.378048780487805"
 			          resource="@drawable/aod_small_planet"/>
 
+			<!-- Big planet foreground behind text -->
 			<PartImage x="100" y="100" width="250" height="250">
 				<Image resource="@drawable/aod_big_planet"/>
 			</PartImage>
 
+			<!-- Condition to show either a 24hr or 12hr watch face -->
 			<Condition>
 				<Expressions>
 					<Expression name="is-24-hr">[IS_24_HOUR_MODE] == 1</Expression>
 				</Expressions>
 				<Compare expression="is-24-hr">
-					<PartText x="0" y="175" width="450" height="68" tintColor="#ffffffff">
+					<!-- Show 24hr clock -->
+					<PartText x="0" y="0" width="450" height="68" tintColor="#ffffffff">
+						<!-- Shift down if the user doesn't want the date shown -->
+						<Transform target="y" value="[CONFIGURATION.show_date] ? 175 : 191" mode="TO"/>
+
 						<Localization calendar="GREGORIAN"/>
+
+						<!-- Text for the clock in 2 different fonts -->
 						<Text>
 							<Font family="Roboto" size="68" weight="BLACK">
 								<Template>%s
@@ -175,8 +217,14 @@
 					</PartText>
 				</Compare>
 				<Default>
+					<!-- Show 12hr clock -->
 					<PartText x="0" y="175" width="450" height="68" tintColor="#ffffffff">
+						<!-- Shift down if the user doesn't want the date shown -->
+						<Transform target="y" value="[CONFIGURATION.show_date] ? 175 : 191" mode="TO"/>
+
 						<Localization calendar="GREGORIAN"/>
+
+						<!-- Text for the clock in two different fonts -->
 						<Text>
 							<Font family="Roboto" size="68" weight="BLACK">
 								<Template>%s
@@ -190,6 +238,7 @@
 								</Template>
 							</Font>
 
+							<!-- AM / PM bitmap hack to make the small text to be bottom aligned -->
 							<BitmapFont family="aod-am-pm" size="68">
 								<Template>%s
 									<Parameter expression="[AMPM_STRING]"/>
@@ -200,24 +249,31 @@
 				</Default>
 			</Condition>
 
-			<PartText x="0" y="243" width="450" height="28" tintColor="#ffffffff">
-				<Localization calendar="GREGORIAN"/>
-				<Text>
-					<Font family="Roboto" size="28" weight="LIGHT">
-						<Upper>
-							<Template>%s
-								<Parameter expression="[MONTH_S]"/>
-							</Template>
-						</Upper>
-					</Font>
+			<!-- Optionally show the date under the time if the user wants -->
+			<BooleanConfiguration id="show_date">
+				<BooleanOption id="TRUE">
+					<PartText x="0" y="243" width="450" height="28" tintColor="#ffffffff">
+						<Localization calendar="GREGORIAN"/>
 
-					<Font family="Roboto" size="28">
-						<Template>%s
-							<Parameter expression="[DAY]"/>
-						</Template>
-					</Font>
-				</Text>
-			</PartText>
+						<!-- Show the date in two different fonts -->
+						<Text>
+							<Font family="Roboto" size="28" weight="LIGHT">
+								<Upper>
+									<Template>%s
+										<Parameter expression="[MONTH_S]"/>
+									</Template>
+								</Upper>
+							</Font>
+
+							<Font family="Roboto" size="28">
+								<Template>%s
+									<Parameter expression="[DAY]"/>
+								</Template>
+							</Font>
+						</Text>
+					</PartText>
+				</BooleanOption>
+			</BooleanConfiguration>
 		</Group>
 	</Scene>
 </WatchFace>
