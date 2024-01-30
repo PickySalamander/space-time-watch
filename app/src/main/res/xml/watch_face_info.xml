@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WatchFaceInfo>
-	<!-- Only "Preview" is required. -->
 	<Preview value="@drawable/watch_face_preview"/>
-
-	<!--    <Category value="CATEGORY_EMPTY" />-->
-	<!--    <AvailableInRetail value="true" />-->
-	<!--    <MultipleInstancesAllowed value="true" />-->
-	<!--    <Editable value="true" />-->
+	<Editable value="true"/>
 </WatchFaceInfo>

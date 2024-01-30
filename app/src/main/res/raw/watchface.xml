@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WatchFace width="450" height="450">
-	<Metadata key="CLOCK_TYPE" value="ANALOG"/>
+	<Metadata key="CLOCK_TYPE" value="DIGITAL"/>
 	<Metadata key="PREVIEW_TIME" value="10:08:32"/>
+
+	<UserConfigurations>
+		<BooleanConfiguration id="show_date"
+		                      displayName="@string/show_date_label"
+		                      screenReaderText="@string/show_date_label"
+		                      defaultValue="TRUE"/>
+
+		<BooleanConfiguration id="show_border"
+		                      displayName="@string/show_border_label"
+		                      screenReaderText="@string/show_border_label"
+		                      defaultValue="TRUE"/>
+	</UserConfigurations>
 
 	<BitmapFonts>
 		<BitmapFont name="am-pm">
@@ -17,7 +29,7 @@
 
 	<Scene backgroundColor="#ff000000">
 		<Group name="regular-face" x="0" y="0" width="450" height="450">
-			<Variant mode="AMBIENT" target="alpha" value="0" />
+			<Variant mode="AMBIENT" target="alpha" value="0"/>
 
 			<PartImage x="0" y="0" width="450" height="450">
 				<Image resource="@drawable/background"/>
@@ -46,7 +58,9 @@
 					<Expression name="is-24-hr">[IS_24_HOUR_MODE] == 1</Expression>
 				</Expressions>
 				<Compare expression="is-24-hr">
-					<PartText x="0" y="175" width="450" height="68" tintColor="#ff0b4b63">
+					<PartText x="0" y="0" width="450" height="68" tintColor="#ff0b4b63">
+						<Transform target="y" value="[CONFIGURATION.show_date] ? 175 : 191" mode="TO"/>
+
 						<Localization calendar="GREGORIAN"/>
 						<Text>
 							<Font family="Roboto" size="68" weight="BLACK">
@@ -64,7 +78,9 @@
 					</PartText>
 				</Compare>
 				<Default>
-					<PartText x="0" y="175" width="450" height="68" tintColor="#ff0b4b63">
+					<PartText x="0" y="0" width="450" height="68" tintColor="#ff0b4b63">
+						<Transform target="y" value="[CONFIGURATION.show_date] ? 175 : 191" mode="TO"/>
+
 						<Localization calendar="GREGORIAN"/>
 						<Text>
 							<Font family="Roboto" size="68" weight="BLACK">
@@ -89,32 +105,40 @@
 				</Default>
 			</Condition>
 
-			<PartText x="0" y="243" width="450" height="28" tintColor="#ff0b4b63">
-				<Localization calendar="GREGORIAN"/>
-				<Text>
-					<Font family="Roboto" size="28" weight="THIN">
-						<Upper>
-							<Template>%s
-								<Parameter expression="[MONTH_S]"/>
-							</Template>
-						</Upper>
-					</Font>
+			<BooleanConfiguration id="show_date">
+				<BooleanOption id="TRUE">
+					<PartText x="0" y="243" width="450" height="28" tintColor="#ff0b4b63">
+						<Localization calendar="GREGORIAN"/>
+						<Text>
+							<Font family="Roboto" size="28" weight="THIN">
+								<Upper>
+									<Template>%s
+										<Parameter expression="[MONTH_S]"/>
+									</Template>
+								</Upper>
+							</Font>
 
-					<Font family="Roboto" size="28">
-						<Template>%s
-							<Parameter expression="[DAY]"/>
-						</Template>
-					</Font>
-				</Text>
-			</PartText>
+							<Font family="Roboto" size="28">
+								<Template>%s
+									<Parameter expression="[DAY]"/>
+								</Template>
+							</Font>
+						</Text>
+					</PartText>
+				</BooleanOption>
+			</BooleanConfiguration>
 
-			<PartImage x="0" y="0" width="450" height="450">
-				<Image resource="@drawable/border"/>
-			</PartImage>
+			<BooleanConfiguration id="show_border">
+				<BooleanOption id="TRUE">
+					<PartImage x="0" y="0" width="450" height="450">
+						<Image resource="@drawable/border"/>
+					</PartImage>
+				</BooleanOption>
+			</BooleanConfiguration>
 		</Group>
 
 		<Group name="aod-face" x="0" y="0" width="450" height="450" alpha="0">
-			<Variant mode="AMBIENT" target="alpha" value="255" />
+			<Variant mode="AMBIENT" target="alpha" value="255"/>
 
 			<PartImage x="0" y="0" width="450" height="450">
 				<Image resource="@drawable/aod_background"/>

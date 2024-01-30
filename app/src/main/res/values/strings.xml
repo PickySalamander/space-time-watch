@@ -1,3 +1,5 @@
 <resources>
 	<string name="app_name">Space and Time</string>
+	<string name="show_date_label">Show Date</string>
+	<string name="show_border_label">Show Watch Border</string>
 </resources>
